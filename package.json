@@ -1,0 +1,22 @@
+{
+  "name": "mongo-cleanup-script",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "cleanup.js",
+  "scripts": {
+    "start": "node cleanup.js",
+    "sandbox:up": "docker compose up -d --wait",
+    "sandbox:seed": "node scripts/seed.js",
+    "sandbox:shell": "docker compose exec mongo mongosh nightscout_sandbox",
+    "sandbox:down": "docker compose down",
+    "sandbox": "MONGO_URI=mongodb://127.0.0.1:27018 DB_NAME=nightscout_sandbox node cleanup.js"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.23",
+    "dotenv": "^17.4.2",
+    "mongodb": "^7.6.0"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+
+# The private copy of Node.js the installer downloads.
+runtime/
+
+# Holds the Atlas connection string, password included. Never commit it.
+.env
