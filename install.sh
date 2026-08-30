@@ -2,7 +2,7 @@
 #
 # One-shot installer for the MongoDB cleanup tool. macOS only.
 #
-#   curl -fsSL https://raw.githubusercontent.com/OWNER/REPO/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/edvrie/mongo-db-cleanup/master/install.sh | bash
 #
 # or, from a checkout you already have:
 #
@@ -18,8 +18,10 @@
 
 set -euo pipefail
 
-REPO_URL="${REPO_URL:-https://github.com/OWNER/REPO.git}"
-BRANCH="${BRANCH:-main}"
+# HTTPS, not the git@github.com: SSH form — the people running this will not
+# have an SSH key set up.
+REPO_URL="${REPO_URL:-https://github.com/edvrie/mongo-db-cleanup.git}"
+BRANCH="${BRANCH:-master}"
 INSTALL_DIR="${INSTALL_DIR:-$HOME/.local/share/mongo-cleanup}"
 BIN_DIR="${BIN_DIR:-$HOME/.local/bin}"
 COMMAND_NAME="mongo-cleanup"
@@ -112,6 +114,7 @@ else
   step "Downloading the tool"
   case "$REPO_URL" in
     *OWNER/REPO*) die "REPO_URL is still the placeholder. Set it at the top of install.sh." ;;
+    *github.com:*) die "REPO_URL must be an https:// URL, not the SSH form." ;;
   esac
   mkdir -p "$(dirname "$INSTALL_DIR")"
   git clone --quiet --branch "$BRANCH" --depth 1 "$REPO_URL" "$INSTALL_DIR" ||

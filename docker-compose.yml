@@ -1,0 +1,24 @@
+# Disposable MongoDB for testing cleanup.js against a real server.
+#
+#   docker compose up -d      start it
+#   npm run sandbox:seed      load fixture data
+#   npm run sandbox           run cleanup.js against it
+#   docker compose down       throw it away
+#
+# Port 27018 on the host, so it can't collide with a local 27017.
+# /data/db is a tmpfs: the data dies with the container, which is what you
+# want when the thing under test is a delete script.
+services:
+  mongo:
+    image: mongo:8
+    container_name: mongo-cleanup-sandbox
+    ports:
+      - "127.0.0.1:27018:27017"
+    tmpfs:
+      - /data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
